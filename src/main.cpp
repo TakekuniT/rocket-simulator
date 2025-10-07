@@ -7,15 +7,36 @@
 
 int main() {
 
-    Rocket rocket = {
-        "test rocket",
-        50.0,       // dry mass (kg)
-        20.0,       // fuel mass (kg)
-        1500.0,     // thrust (N)
-        0.5,        // burn rate (kg/s)
-        0.3,        // drag coefficient
-        0.1         // cross-sectional area (m^2)
-    };
+    // Sample rocket data
+    // Rocket rocket = {
+    //     "test rocket",
+    //     50.0,       // dry mass (kg)
+    //     20.0,       // fuel mass (kg)
+    //     1500.0,     // thrust (N)
+    //     0.5,        // burn rate (kg/s)
+    //     0.3,        // drag coefficient
+    //     0.1         // cross-sectional area (m^2)
+    // };
+
+    Rocket rocket;
+
+
+    // Get user input
+    std::cout << "Enter rocket name: ";
+    std::cin >> rocket.name;
+    std::cout << "Enter dry mass (kg): ";
+    std::cin >> rocket.massDry;
+    std::cout << "Enter fuel mass (kg): ";
+    std::cin >> rocket.fuelMass;
+    std::cout << "Enter thrust (N): ";
+    std::cin >> rocket.thrust;
+    std::cout << "Enter burn rate (kg/s): ";
+    std::cin >> rocket.burnRate;
+    std::cout << "Enter drag coefficient: ";
+    std::cin >> rocket.dragCoeff;
+    std::cout << "Enter cross-sectional area (m^2): ";
+    std::cin >> rocket.area;
+    std::cout << std::endl;
 
     double dt = 0.01;                   // time step (s)
     double t = 0.0;                     // simulation start time (s)
@@ -23,7 +44,9 @@ int main() {
     double velocity = 0.0;              // initial velocity (m/s)
     double fuel = rocket.fuelMass;      // initial fuel mass (kg)
 
-    std::ofstream file("trajectory.csv");
+
+    std::string filename = "output/" + rocket.name + "_trajectory.csv";
+    std::ofstream file(filename);
     file << "time,altitude,velocity,acceleration" << std::endl;
 
     // simulation continues until rocket hits the ground
