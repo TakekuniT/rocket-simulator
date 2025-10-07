@@ -7,5 +7,6 @@ struct Rocket {
     double fuelMass;    // kg
     double thrust;      // N
     double burnRate;    // kg/s
+    double dragCoeff;   // dimensionless
     double area;        // m^2
 };
