@@ -45,7 +45,7 @@ int main() {
     double fuel = rocket.fuelMass;      // initial fuel mass (kg)
 
 
-    std::string filename = "output/" + rocket.name + "_trajectory.csv";
+    std::string filename = "output/csv/" + rocket.name + "_trajectory.csv";
     std::ofstream file(filename);
     file << "time,altitude,velocity,acceleration" << std::endl;
 
