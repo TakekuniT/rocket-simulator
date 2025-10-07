@@ -8,7 +8,7 @@ namespace Physics {
 
     // calculates air density at given altitude
     inline double getAirDensity(double altitude) {
-        return rho0 * std::pow(scaleHeight / altitude, 2);
-        // return rho0 * exp(-altitude / scaleHeight);
+        // rho_0 * e^(-h/H)
+        return rho0 * exp(-altitude / scaleHeight);
     }
 }
