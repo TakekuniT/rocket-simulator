@@ -23,7 +23,7 @@ int main() {
 
     // Get user input
     std::cout << "Enter rocket name: ";
-    std::cin >> rocket.name;
+    std::getline(std::cin, rocket.name);
     std::cout << "Enter dry mass (kg): ";
     std::cin >> rocket.massDry;
     std::cout << "Enter fuel mass (kg): ";
@@ -45,7 +45,7 @@ int main() {
     double fuel = rocket.fuelMass;      // initial fuel mass (kg)
 
 
-    std::string filename = "output/csv/" + rocket.name + "_trajectory.csv";
+    std::string filename = "output/csv/" + rocket.name + ".csv";
     std::ofstream file(filename);
     file << "time,altitude,velocity,acceleration" << std::endl;
 
@@ -104,5 +104,5 @@ int main() {
         if (altitude < 0 && t > 2) break;
     }
     file.close();
-    std::cout << "Simulation complete, results saved to trajectory.csv" << std::endl;
+    std::cout << "Simulation complete, results saved as csv file." << std::endl;
 }
