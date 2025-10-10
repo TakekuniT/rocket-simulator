@@ -7,7 +7,7 @@ A simple C++ program that simulates the trajectory of a rocket, taking into acco
 Make sure you are in the project root directory, then run:
 
 ```bash
-g++ src/main.cpp -Iinclude -o rocket_sim
+ g++ -std=c++17 src/main.cpp -Iinclude -o rocket_sim
 ```
 
 ## Running the Simulator and Visualization
