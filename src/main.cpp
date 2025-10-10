@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <filesystem>
+
 #include "rocket.hpp"
 #include "physics.hpp"
 
@@ -44,7 +46,7 @@ int main() {
     double velocity = 0.0;              // initial velocity (m/s)
     double fuel = rocket.fuelMass;      // initial fuel mass (kg)
 
-
+    std::filesystem::create_directories("output/csv");
     std::string filename = "output/csv/" + rocket.name + ".csv";
     std::ofstream file(filename);
     file << "time,altitude,velocity,acceleration" << std::endl;
