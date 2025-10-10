@@ -1,3 +1,4 @@
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -5,12 +6,11 @@ import os
 # -------------------------------
 script_dir = os.path.dirname(os.path.abspath(__file__))
 csv_folder = os.path.join(script_dir, "../output/csv")
-rocket_name = "rocket test 1"
-filename = os.path.join(csv_folder, f"{rocket_name}.csv")
 # -------------------------------
 
 def visualize(rocket_name):
     # Read CSV
+    filename = os.path.join(csv_folder, f"{rocket_name}.csv")
     data = pd.read_csv(filename)
 
     # Plot Altitude vs Time
@@ -46,4 +46,8 @@ def visualize(rocket_name):
     plt.tight_layout()
     plt.show()
 
-visualize("rocket test 1")
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("Usage: python visualize.py <rocket_name>")
+    else:
+        visualize(sys.argv[1])

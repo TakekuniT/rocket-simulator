@@ -55,14 +55,16 @@ int main() {
         // mass at given time
         double mass = rocket.massDry + fuel;
 
+        // prevent negative altitude for air density calculation
+        double altitudeEffective = std::max(0.0, altitude);
+
         // rho(h) = rho_0 * e^(-h/H)
         // air density at given altitude
-        double airDensity = Physics::getAirDensity(altitude);
+        double airDensity = Physics::getAirDensity(altitudeEffective);
 
         // D = 1/2 * rho(h) * C_d * A * v^2
         // drag force
-        double drag = 0.5 * airDensity * rocket.dragCoeff * rocket.area * velocity * velocity;
-        if (velocity > 0) drag *= -1;
+        double drag = -0.5 * airDensity * rocket.dragCoeff * rocket.area * velocity * std::abs(velocity); // drag always opposes motion
 
         // thrust at given fuel
         double thrust = (fuel > 0) ? rocket.thrust : 0.0;
@@ -73,7 +75,7 @@ int main() {
 
         // F_net = T - D - W
         // net force
-        double force = thrust - drag - weight;
+        double force = thrust + drag - weight; // drag already includes direction
 
         // a(t) = F_net / m(t)
         // acceleration at given time
@@ -81,16 +83,34 @@ int main() {
 
         // v_(n+1) = v_n + a(t) * dt
         // velocity at next time step
-        velocity += acceleration * dt;
+        //velocity += acceleration * dt; explicit euler integration
+        double newVelocity = velocity + acceleration * dt;
 
         // h_(n+1) = h_n + v_(n+1) * dt
         // altitude at next time step
-        altitude += velocity * dt;
+        double newAltitude = altitude + newVelocity * dt;
+
+        
+
+        // check for ground collision
+        if (newAltitude <= 0.0 && velocity < 0.0) {
+            double frac = altitude / (altitude - newAltitude);
+            t += frac * dt;
+            velocity = 0.0;
+            altitude = 0.0;
+            // save data to CSV
+            file << t << "," << altitude << "," << velocity << "," << acceleration << std::endl;
+            break;
+        }
+
+
+        velocity = newVelocity;
+        altitude = newAltitude;
+        
 
         // t_(n+1) = t_n + dt
         // increment time
         t += dt;
-
 
         // m_fuel(t+dt) = m_fuel(t) - m_fuel(dt)
         // burn fuel
@@ -101,8 +121,20 @@ int main() {
 
         // saves data to CSV
         file << t << "," << altitude << "," << velocity << "," << acceleration << std::endl;
-        if (altitude < 0 && t > 2) break;
+
+        
     }
+
     file.close();
     std::cout << "Simulation complete, results saved as csv file." << std::endl;
+
+    // Call the Python visualization script
+    std::string command = "python3 python/trajectory.py \"" + rocket.name + "\"";
+    int result = std::system(command.c_str());
+
+    if (result != 0) {
+        std::cerr << "Warning: visualization script failed to run." << std::endl;
+    }
+
+    std::cout << "Visualization complete." << std::endl;
 }
