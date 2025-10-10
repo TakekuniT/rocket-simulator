@@ -38,7 +38,7 @@ int main() {
     std::cin >> rocket.area;
     std::cout << std::endl;
 
-    double dt = 0.01;                   // time step (s)
+    double dt = 0.001;                   // time step (s)
     double t = 0.0;                     // simulation start time (s)
     double altitude = 0.0;              // initial altitude (m)
     double velocity = 0.0;              // initial velocity (m/s)
