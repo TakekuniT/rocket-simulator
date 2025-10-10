@@ -46,6 +46,7 @@ int main() {
 
 
     std::string filename = "output/csv/" + rocket.name + ".csv";
+    std::filesystem::create_directories("output/csv");
     std::ofstream file(filename);
     file << "time,altitude,velocity,acceleration" << std::endl;
 
